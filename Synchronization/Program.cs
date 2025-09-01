@@ -6,8 +6,16 @@
 // }
 //
 // Console.Read();
-//
+//// RaceCondition
 // RaceCondition.ShowCounter();
+
+//// Mutex
+
+// var sample = new MutexSample(4);
+//
+// sample.Start();
+//
+// Console.ReadLine();
 
 
 // 1. addr
@@ -19,7 +27,6 @@
 // > 0x042
 // > 0x042
 // > ++
-
 
 var test = new MultiThreadedListTest(4);
 
@@ -51,7 +58,6 @@ public static class RaceCondition
         Console.WriteLine($"Counter:  {_counter}");
     }
 }
-
 
 struct HeavyObject
 {
@@ -103,4 +109,39 @@ public class MultiThreadedListTest
     }
 
     private readonly object _o = new object();
+}
+
+
+public class MutexSample
+{
+    private readonly int _threads;
+    private List<HeavyObject> _values = [];
+    private readonly Mutex _mutex;
+
+    public MutexSample(int threads)
+    {
+        _threads = threads;
+
+        _mutex = new Mutex();
+    }
+
+    public void Start()
+    {
+        for (int i = 0; i < _threads; i++)
+        {
+            ThreadPool.QueueUserWorkItem(_ => AddElements());
+        }
+    }
+
+    private void AddElements()
+    {
+        _mutex.WaitOne();
+        
+        for (int i = 0; i < 10_000; i++)
+        {
+            _values.Add(new HeavyObject());
+        }
+
+        _mutex.ReleaseMutex();
+    }
 }
