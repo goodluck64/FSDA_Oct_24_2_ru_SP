@@ -1,0 +1,24 @@
+﻿<Window x:Class="Bindings.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bindings"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <TextBox x:Name="MyTextBox" Grid.Row="0" Grid.Column="0" Text="200"/>
+        <TextBlock x:Name="MyTextBlock" Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=MyTextBox, Path=Text,Mode=TwoWay}" />
+        <Button Grid.Row="1" Grid.Column="0" Click="ButtonBase_OnClick" Content="{Binding ElementName=MyTextBox, Path=Text}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MyContent}"/>
+    </Grid>
+</Window>
